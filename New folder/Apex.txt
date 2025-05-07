@@ -1,0 +1,63 @@
+Setup->Quick Find-> Apex Classes -> Developer Console -> new Apex Class
+
+Calculator
+public class Calculator {
+    // Method to add two numbers
+    public static Decimal add(Decimal num1, Decimal num2) {
+        return num1 + num2;
+    }
+    
+    // Method to subtract two numbers
+    public static Decimal subtract(Decimal num1, Decimal num2) {
+        return num1 - num2;
+    }
+    
+    // Method to multiply two numbers
+    public static Decimal multiply(Decimal num1, Decimal num2) {
+        return num1 * num2;
+    }
+    
+    // Method to divide two numbers (check for division by zero)
+    public static Decimal divide(Decimal num1, Decimal num2) {
+        // Check if divisor is zero
+        if (num2 == 0) {
+            System.debug('Error: Division by zero is not allowed.');
+            return null; // Return null if division by zero
+        }
+        return num1 / num2;
+    }
+}
+
+CalculatorController
+
+public class CalculatorController {
+    public Decimal num1 {get; set;}
+    public Decimal num2 {get; set;}
+    public Decimal resultAdd {get; set;}
+    public Decimal resultSub {get; set;}
+    public Decimal resultMul {get; set;}
+    public Decimal resultDiv {get; set;}
+
+    // Method to perform calculations
+    public void calculate() {
+        resultAdd = Calculator.add(num1, num2);
+        resultSub = Calculator.subtract(num1, num2);
+        resultMul = Calculator.multiply(num1, num2);
+        resultDiv = Calculator.divide(num1, num2);
+    }
+}
+
+Setup->VisualForce pages-> new -> Calculator Page
+
+<apex:page controller="CalculatorController">
+    <h1>Simple Calculator</h1>
+    <apex:form>
+        <apex:inputText value="{!num1}" label="Enter First Number" />
+        <apex:inputText value="{!num2}" label="Enter Second Number" />
+        <apex:commandButton action="{!calculate}" value="Calculate" rerender="result" />
+    </apex:form>
+
+    <h2>Results:</h2>
+    <apex:outputText id="result" value="Addition: {!resultAdd}, Subtraction: {!resultSub}, Multiplication: {!resultMul}, Division: {!resultDiv}" />
+</apex:page>
+
